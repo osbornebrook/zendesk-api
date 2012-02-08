@@ -16,6 +16,10 @@ module Zendesk
     def update_ticket(id, input, options = {})
       make_request("tickets/#{id}", {:update => Zendesk::Main.to_xml('ticket', input)}, options)
     end
+    
+    def add_ticket_comment(id, input, options = {})
+      make_request("tickets/#{id}", {:update => Zendesk::Main.to_xml('comment', input)}, options)
+    end
 
     def delete_ticket(id)
       make_request("tickets/#{id}", :destroy => true)
