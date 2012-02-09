@@ -13,11 +13,12 @@ module Zendesk
       else
         @format = 'xml'
       end
+      @timeout = options[:timeout] || 30
     end
 
     def main_url
       url_prefix    = @options[:ssl] ? "https://" : "http://"
-      url_postfix   = ".zendesk.com/"
+      url_postfix   = ".zendesk.com/api/v1/"
       url = url_prefix + @account + url_postfix
     end
 
@@ -55,6 +56,7 @@ module Zendesk
       
       curl = Curl::Easy.new(main_url + end_url + ".#{@format}")
       curl.userpwd = "#{@username}:#{@password}"
+      curl.timeout = @timeout
       
       curl.headers={}
       curl.headers.merge!({"X-On-Behalf-Of" => options[:on_behalf_of]}) if options[:on_behalf_of].present?
